@@ -3,6 +3,7 @@
 package main
 
 import (
+	"api/model"
 	"database/sql"
 	"fmt"
 
@@ -51,7 +52,7 @@ func main() {
 	fmt.Println("Insert id: ", id)
 
 	// Query
-	var post = Post{}
+	var post = model.Post{}
 	rows, err := db.Query("select * from posts")
 	ErrorCheck(err)
 	defer rows.Close()
