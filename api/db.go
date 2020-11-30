@@ -9,11 +9,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Post struct {
-	Id   int
-	Data string
-}
-
 func ErrorCheck(err error) {
 	if err != nil {
 		panic(err.Error())
@@ -47,13 +42,22 @@ func main() {
 
 	// Insert
 	// prepare
-	stmt, e := db.Prepare("insert into posts(data) values (?)")
-	ErrorCheck(e)
-	res, e := stmt.Exec("Post test")
-	ErrorCheck(e)
-	id, e := res.LastInsertId()
-	ErrorCheck(e)
+	stmt, err := db.Prepare("insert into posts(data) values (?)")
+	ErrorCheck(err)
+	res, err := stmt.Exec("Post test")
+	ErrorCheck(err)
+	id, err := res.LastInsertId()
+	ErrorCheck(err)
 	fmt.Println("Insert id: ", id)
 
-	defer db.Close()
+	// Query
+	var post = Post{}
+	rows, err := db.Query("select * from posts")
+	ErrorCheck(err)
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&post.Id, &post.Data)
+		ErrorCheck(err)
+		fmt.Println(post)
+	}
 }
