@@ -2,7 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"fmt"
 	model "test/model"
 
 	"github.com/gin-gonic/gin"
@@ -10,19 +9,33 @@ import (
 
 type User = model.User
 
+func errorCheck(err error) {
+	if err != nil {
+		panic(err)
+		return
+	}
+}
+
+// curl -d "{""name"":""value1""}" -H "Content-Type: application/json" -X POST http://localhost:5000/v1/user/
 func add(c *gin.Context) {
-	// db := c.MustGet("db").(*sql.DB)
+	var u User
+	err := c.Bind(&u)
+	errorCheck(err)
+	db := c.MustGet("db").(*sql.DB)
+	stmt, err := db.Prepare("INSERT INTO user(name) VALUES (?)")
+	errorCheck(err)
+	res, err := stmt.Exec(u.Name)
+	errorCheck(err)
+	id, err := res.LastInsertId()
+	errorCheck(err)
+	defer stmt.Close()
+	c.JSON(200, int(id))
 }
 
 func getAll(c *gin.Context) {
-	fmt.Println("--> controller worked ")
-
 	db := c.MustGet("db").(*sql.DB)
 	rows, err := db.Query("SELECT * FROM user")
-	if err != nil {
-		c.AbortWithStatus(500)
-		return
-	}
+	errorCheck(err)
 
 	var users []User
 	for rows.Next() {
@@ -35,6 +48,11 @@ func getAll(c *gin.Context) {
 }
 
 func get(c *gin.Context) {
-	// db := c.MustGet("db").(*sql.DB)
-
+	id := c.Param("id")
+	db := c.MustGet("db").(*sql.DB)
+	row := db.QueryRow("SELECT * FROM user WHERE id=?", id)
+	var u User
+	err := row.Scan(&u.Id, &u.Name)
+	errorCheck(err)
+	c.JSON(200, u)
 }

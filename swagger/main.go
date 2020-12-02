@@ -7,6 +7,7 @@ import (
 	database "test/database"
 	docs "test/docs"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -27,16 +28,20 @@ func main() {
 	docs.SwaggerInfo.BasePath = ""
 
 	// set router and db
-	app := api.Router()
+	app := gin.Default()
 
+	// initialize & set db
 	db, err := database.Initialize(DBCONFIG)
 	if err != nil {
 		panic(err)
 	}
 	app.Use(database.Inject(db))
 
+	// add routes
+	api.ApplyRoutes(app)
+
+	// run app
 	fmt.Println("--> Server is listening on http://localhost:" + PORT)
 	fmt.Println("--> Swagger docs created in http://localhost:" + PORT + "/swagger/index.html")
-
 	app.Run(":" + PORT)
 }

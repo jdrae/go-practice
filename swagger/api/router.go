@@ -8,9 +8,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func Router() *gin.Engine {
-
-	r := gin.Default()
+func ApplyRoutes(r *gin.Engine) {
 
 	r.GET("/", home)
 	r.GET("/welcome/:name", welcome)
@@ -21,6 +19,4 @@ func Router() *gin.Engine {
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	return r
 }
