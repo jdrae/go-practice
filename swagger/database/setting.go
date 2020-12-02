@@ -6,6 +6,7 @@ import (
 	model "test/model"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // Initialize database setting

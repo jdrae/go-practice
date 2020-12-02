@@ -1,7 +1,7 @@
-package router
+package api
 
 import (
-	controller "test/controller"
+	"test/api/user"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -12,8 +12,14 @@ func Router() *gin.Engine {
 
 	r := gin.Default()
 
-	r.GET("/", controller.Home)
-	r.GET("/welcome/:name", controller.Welcome)
+	r.GET("/", home)
+	r.GET("/welcome/:name", welcome)
+
+	v1 := r.Group("/v1")
+	{
+		user.ApplyRoutes(v1)
+	}
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r

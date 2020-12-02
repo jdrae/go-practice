@@ -1,4 +1,4 @@
-package controller
+package api
 
 import (
 	model "test/model"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Home(c *gin.Context) {
+func home(c *gin.Context) {
 	c.JSON(200, gin.H{"ping": "pong"})
 }
 
@@ -19,9 +19,9 @@ func Home(c *gin.Context) {
 // @Param name path string true "User name"
 // @Router /welcome/{name} [get]
 // @Success 200 {object} model.User
-func Welcome(c *gin.Context) {
+func welcome(c *gin.Context) {
 	name := c.Param("name")
-	welcomeMessage := model.User{ID: 1, Name: name}
+	welcomeMessage := model.User{Id: 1, Name: name}
 
 	c.JSON(200, gin.H{"message": welcomeMessage})
 }

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	api "test/api"
 	database "test/database"
 	docs "test/docs"
-	router "test/router"
 
 	"github.com/joho/godotenv"
 )
@@ -27,7 +27,7 @@ func main() {
 	docs.SwaggerInfo.BasePath = ""
 
 	// set router and db
-	app := router.Router()
+	app := api.Router()
 
 	db, err := database.Initialize(DBCONFIG)
 	if err != nil {
