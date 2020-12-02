@@ -2,24 +2,37 @@ package main
 
 import (
 	"fmt"
+	"os"
 	database "test/database"
 	docs "test/docs"
 	router "test/router"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	var PORT = "5000"
+	// load .env variables
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+	PORT := os.Getenv("PORT")
+	DBCONFIG := os.Getenv("DBCONFIG")
 
-	// programatically set swagger info
+	// set swagger info
 	docs.SwaggerInfo.Title = "Swagger Example API"
 	docs.SwaggerInfo.Description = "This is a sample server for Swagger."
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost:" + PORT
 	docs.SwaggerInfo.BasePath = ""
 
+	// set router and db
 	app := router.Router()
 
-	db, _ := database.Initialize()
+	db, err := database.Initialize(DBCONFIG)
+	if err != nil {
+		panic(err)
+	}
 	app.Use(database.Inject(db))
 
 	fmt.Println("--> Server is listening on http://localhost:" + PORT)

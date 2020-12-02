@@ -23,4 +23,4 @@
     * [Gin에서 Swagger 사용하기](https://dejavuqa.tistory.com/330)
     * [mysql curd (with Gin)](https://dejavuqa.tistory.com/331?category=320633)
     * [Using MVC to Structure Go Web Applications](https://www.calhoun.io/using-mvc-to-structure-go-web-applications/)
-    * [gin-rest-api-sample](https://github.com/velopert/gin-rest-api-sample)
+    * [gin-rest-api-sample](https://github.com/velopert/gin-rest-api-sample): got helped connecting db to app

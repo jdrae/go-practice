@@ -6,11 +6,11 @@ import (
 	model "test/model"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 )
 
-func Initialize() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "user:1234@/test")
+// Initialize database setting
+func Initialize(DBCONFIG string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", DBCONFIG)
 	if err != nil {
 		panic(err)
 	}
@@ -19,11 +19,12 @@ func Initialize() (*sql.DB, error) {
 	return db, err
 }
 
+// Migrate needed tables for app (executed in Initialize func)
 func Migrate(db *sql.DB) {
 	model.CreateUserTable(db)
 }
 
-// Inject injects database to gin context
+// Inject database to gin context
 func Inject(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set("db", db)
