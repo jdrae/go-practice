@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	database "test/database"
 	docs "test/docs"
 	router "test/router"
 )
@@ -16,10 +17,13 @@ func main() {
 	docs.SwaggerInfo.Host = "localhost:" + PORT
 	docs.SwaggerInfo.BasePath = ""
 
-	r := router.Router()
+	app := router.Router()
 
-	fmt.Println("Server is listening on http://localhost:" + PORT)
-	fmt.Println("Swagger docs created in http://localhost:" + PORT + "/swagger/index.html")
+	db, _ := database.Initialize()
+	app.Use(database.Inject(db))
 
-	r.Run(":" + PORT)
+	fmt.Println("--> Server is listening on http://localhost:" + PORT)
+	fmt.Println("--> Swagger docs created in http://localhost:" + PORT + "/swagger/index.html")
+
+	app.Run(":" + PORT)
 }

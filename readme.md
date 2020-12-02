@@ -2,6 +2,8 @@
 
     `go mod init [module name]`
 
+    ( run `swag init` in swagger/ directory)
+
     `go run file name`
 
 ### References for Each Directories
@@ -19,3 +21,6 @@
 * swagger/
     * [swaggo/swag](https://github.com/swaggo/swag)
     * [Gin에서 Swagger 사용하기](https://dejavuqa.tistory.com/330)
+    * [mysql curd (with Gin)](https://dejavuqa.tistory.com/331?category=320633)
+    * [Using MVC to Structure Go Web Applications](https://www.calhoun.io/using-mvc-to-structure-go-web-applications/)
+    * [gin-rest-api-sample](https://github.com/velopert/gin-rest-api-sample)
